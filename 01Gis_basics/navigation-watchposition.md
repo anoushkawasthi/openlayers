@@ -26,13 +26,13 @@ Navigation works automatically.
 ## watchPosition(): 
 Tracks users real-world location using the device's GPS.   
 ## GeoLocation API: 
-Browsers Provide a geolocation api that has 2 methods.  
+Browsers Provides a geolocation api that has 2 methods.  
 1)  navigator.geolocation.getCurrentPosition():  
 this fetches the current location once.    
   
 
 2) navigator.geolocation.watchPosition()  
-this tracks the location(eg, walking eiht googlemaps, the location keeps on refreshing)
+this tracks the location(eg, walking wiht googlemaps, the location keeps on refreshing)
   
     
 Flow  
@@ -78,6 +78,6 @@ everytime location changes function runs again.
 # What is position.coords?  
 It contains latitude, longitude, Accuracy, Altitude, Heading, Speed
   position.coords.latitude  -> return latitude  
-  
+
 ````
    
