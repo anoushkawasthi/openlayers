@@ -15,7 +15,6 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { Style, Icon } from 'ol/style';
 import locationPin from './Assets/location-pin-svgrepo-com.svg'
-import Geolocation from 'ol/Geolocation';
 
 
 
@@ -99,26 +98,35 @@ function MapComponent() {
 
     mapRef.current =map;
 
-    const geolocation = new Geolocation({
-      projection: map.getView().getProjection(),
-      trackingOptions: {
-        enableHighAccuracy: true,
-        maximumAge: 2000,
-      },
-    });
-    geolocation.setTracking(true);
-    geolocation.on('change:position',()=>{
-      const coordinates=geolocation.getPosition();
-      if(coordinates){
-        markerGeometry.setCoordinates(coordinates);
-        map.view().animate({
-          center: coordinates, duration: 1000
-        });
-      }
-    });
+    let watchId;
+
+    if('geolocation' in navigator){
+      watchId=navigator.geolocation.watchPosition(
+        (position)=>{
+          const {latitude, longitude}=position.coords;
+          const MapCoordinates=fromLonLat([longitude, latitude]);
+          markerGeometry.setCoordinates(MapCoordinates);
+          map.getView().animate({
+            center:MapCoordinates,
+            duration: 1000
+          });
+        },
+        (error)=>{
+          console.log("Error getting your location",error.message);
+        },
+        {
+          enableHighAccuracy:true,
+          maximumAge:2000,
+        }
+      );
+    }else {
+      console.error("Geolocation is not supported by your browser.");
+    }
 
     return () => {
-      geolocation.setTracking(false);
+      if (watchId) {
+        navigator.geolocation.clearWatch(watchId);
+      }
       map.setTarget(null)
     }; 
   }, []);
