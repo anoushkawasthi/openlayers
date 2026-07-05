@@ -22,6 +22,8 @@ function MapComponent() {
   const mapElement = useRef(null);
   const mapRef=useRef(null);
   const [layerType,setLayerType]=useState('osm');
+
+  const currentLocation=useRef(null);
   
   useEffect(() => {
     if (!mapElement.current) return;
@@ -105,11 +107,13 @@ function MapComponent() {
         (position)=>{
           const {latitude, longitude}=position.coords;
           const MapCoordinates=fromLonLat([longitude, latitude]);
+          currentLocation.current=MapCoordinates;
           markerGeometry.setCoordinates(MapCoordinates);
           map.getView().animate({
             center:MapCoordinates,
             duration: 1000
           });
+          
         },
         (error)=>{
           console.log("Error getting your location",error.message);
@@ -152,6 +156,18 @@ function MapComponent() {
     }
   }, [layerType]);
 
+  const handleClick=()=>{
+    if(mapRef.current && currentLocation.current ){
+      mapRef.current.getView().animate({
+        center: currentLocation.current,
+        zoom:16,
+        duration:1500
+      });
+    }else{
+      alert("Error getting your Location!");
+    }
+  };
+
   return (
     <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
       {/* A simple controller UI floating on top of the map */}
@@ -162,8 +178,10 @@ function MapComponent() {
           <option value="satellite">Satellite (ArcGIS)</option>
           <option value="topo">Topography (OpenTopo)</option>
         </select>
+        <button onClick={handleClick} style={{cursor: 'pointer', padding: '4px 8px'}}>
+        Locate Me📍
+        </button>
       </div>
-
       <div ref={mapElement} style={{ width: '100%', height: '100%' }} />
     </div>
   );
