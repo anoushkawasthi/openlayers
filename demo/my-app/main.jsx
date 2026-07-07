@@ -18,6 +18,7 @@ import locationPin from './Assets/location-pin-svgrepo-com.svg'
 import LineString from 'ol/geom/LineString'; 
 import Polygon from 'ol/geom/Polygon'; 
 import Overlay from 'ol/Overlay';
+import MapInteractions from './mapInteractions';
 
 
 function MapComponent() {
@@ -29,6 +30,8 @@ function MapComponent() {
 
   const popupElement = useRef(null);
   const [popupText, setPopupText] = useState("");
+
+  const [mapLoaded, setMapLoaded] = useState(false);
   
   useEffect(() => {
     if (!mapElement.current) return;
@@ -138,10 +141,14 @@ function MapComponent() {
 
     const shapesLayer = new VectorLayer({
       source: shapesSource,
-      zIndex: 90,
+      zIndex: 90
     });
 
-
+    const drawLayer = new VectorLayer({
+      source: new VectorSource(),
+      properties: { name: 'drawLayer' }, // Must match the name in MapInteractions!
+      zIndex: 90,
+    });
 
     const map = new OlMap({
       target: mapElement.current,
@@ -149,7 +156,8 @@ function MapComponent() {
         BaseLayer, 
         staticLayerImage, 
         markerLayer,
-        shapesLayer
+        shapesLayer,
+        drawLayer
       ],
       view: new View({
         center: fromLonLat([70.90173629688752,26.85644063234675]), 
@@ -158,6 +166,7 @@ function MapComponent() {
     });
 
     mapRef.current =map;
+    setMapLoaded(true);
 
     const popupOverlay= new Overlay({
       element: popupElement.current,
@@ -265,11 +274,16 @@ function MapComponent() {
           <option value="satellite">Satellite (ArcGIS)</option>
           <option value="topo">Topography (OpenTopo)</option>
         </select>
-        <button onClick={handleClick} style={{cursor: 'pointer', padding: '4px 8px'}}>
+        <button onClick={handleClick} style={{cursor: 'pointer', padding: '4px 8px', marginLeft: '10px'}}>
         Locate Me📍
         </button>
       </div>
+      
+      {/* --- RENDER YOUR INTERACTIONS COMPONENT HERE --- */}
+      {mapLoaded && <MapInteractions mapRef={mapRef} />}
+
       <div ref={mapElement} style={{ width: '100%', height: '100%' }} />
+      
       <div 
         ref={popupElement} 
         style={{
@@ -278,10 +292,9 @@ function MapComponent() {
           borderRadius: '8px',
           boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
           border: '2px solid #3399CC',
-          pointerEvents: 'none', // Prevents the popup from blocking mouse clicks
-          // If popupText is empty, hide the whole container visually
+          pointerEvents: 'none', 
           display: popupText ? 'block' : 'none', 
-          transform: 'translate(-50%, -100%)' // Centers it perfectly over the pin
+          transform: 'translate(-50%, -100%)' 
         }}
       >
         <b>📍 {popupText}</b>
