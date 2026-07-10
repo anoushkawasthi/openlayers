@@ -35,44 +35,117 @@ Problems:
 
 ## The GIS Stack
 
-           User
+```
+       User
 
-             ↓
+         ↓
 
-       OpenLayers
+   OpenLayers
 
-             ↓
+         ↓
 
-     WMS / WFS / WMTS
+ WMS / WFS / WMTS
 
-             ↓
+         ↓
 
-        GeoServer
+    GeoServer
 
-             ↓
+         ↓
+```
 
  PostGIS / Shapefile
 
-             ↓
+```
+         ↓
 
-      Geographic Data
-
-
-
-## GIS Services 
+  Geographic Data
+```
 
 
+
+## GIS Services
 
 GeoServer creates services like WMS, WFS,WMTS,WCS  and open layers consumes these. Openlayer displays whatever data is send by the GeoServer. 
 
-### Geoserver Responsibilities: 
+### Geoserver Responsibilities:
 
-1. It reads data: Like the PostGIS or shapefile or GeoTIFF or the Geopakage 
+1. It reads data: Like the PostGIS or shapefile or GeoTIFF or the Geopakage
 2. Converts data: Now database stores 'polygon' form but the browser needs png, json and tiles,, now here geoserver converts into the required datatype.
 3. Styling: Styling gives character and makes sure it does not look identical .
 4. Projection Transformation: Database: EPSG:4326 and the Browser uses EPSG: 3857, this transformation is also done by the GeoServer.
-5. Filtering: 
+5. Filtering:
 6. Security: It controls, auth, permissions, roles, kayers users can access.
 7. Caching:  Frequently accessed maps are cached instead of regenerating them everytime.
-8. 
+
+# RoadMap
+
+
+
+GeoServer Fundamentals
+
+        │
+
+        ▼
+
+ Installation
+
+        │
+
+        ▼
+
+ Data Publishing
+
+        │
+
+        ▼
+
+ Services
+
+        │
+
+        ▼
+
+CRS & Reprojection   ← Next
+
+        │
+
+        ▼
+
+Styles (SLD)
+
+        │
+
+        ▼
+
+GeoWebCache & WMTS
+
+        │
+
+        ▼
+
+REST API
+
+        │
+
+        ▼
+
+PostGIS Integration
+
+        │
+
+        ▼
+
+Security
+
+        │
+
+        ▼
+
+Performance Tuning
+
+        │
+
+        ▼
+
+Production Deployment
 
