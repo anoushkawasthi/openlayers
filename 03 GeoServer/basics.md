@@ -77,75 +77,96 @@ GeoServer creates services like WMS, WFS,WMTS,WCS  and open layers consumes thes
 6. Security: It controls, auth, permissions, roles, kayers users can access.
 7. Caching:  Frequently accessed maps are cached instead of regenerating them everytime.
 
+
+
 # RoadMap
-
-
 
 GeoServer Fundamentals
 
-        │
+```
+    │
 
-        ▼
+    ▼
+```
 
  Installation
 
-        │
+```
+    │
 
-        ▼
+    ▼
+```
 
  Data Publishing
 
-        │
+```
+    │
 
-        ▼
+    ▼
+```
 
  Services
 
-        │
+```
+    │
 
-        ▼
+    ▼
+```
 
 CRS & Reprojection   ← Next
 
-        │
+```
+    │
 
-        ▼
+    ▼
+```
 
 Styles (SLD)
 
-        │
+```
+    │
 
-        ▼
+    ▼
+```
 
 GeoWebCache & WMTS
 
-        │
+```
+    │
 
-        ▼
+    ▼
+```
 
 REST API
 
-        │
+```
+    │
 
-        ▼
+    ▼
+```
 
 PostGIS Integration
 
-        │
+```
+    │
 
-        ▼
+    ▼
+```
 
 Security
 
-        │
+```
+    │
 
-        ▼
+    ▼
+```
 
 Performance Tuning
 
-        │
+```
+    │
 
-        ▼
+    ▼
+```
 
 Production Deployment
-
