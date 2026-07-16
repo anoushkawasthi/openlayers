@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Map from "ol/Map";
 import View from "ol/View";
@@ -98,6 +98,10 @@ function App() {
 
   const popupRef = useRef(null);
 
+  const [selectionMode, setSelectionMode] = useState(false);
+  
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
+
   useEffect(() => {
     if (mapRef.current) return;
 
@@ -130,10 +134,21 @@ function App() {
     mapRef.current.addInteraction(select);
 
     select.on("select", (event)=>{
+    
       const feature = event.selected[0];
 
       if(!feature){
         popupOverlay.setPosition(undefined);
+        return;
+      }
+
+      if(selectionMode){
+        setSelectedFeatures((prev) => {
+          if (prev.includes(feature)) {
+            return prev.filter((f) => f !== feature);
+          }
+          return [...prev, feature];
+        });
         return;
       }
 
@@ -178,10 +193,30 @@ function App() {
         mapRef.current=null;  
       }
     };
-  }, []);
+  }, [selectionMode]);
 
   return (
     <>
+      <button onClick = {()=>{
+      if(selectionMode){
+        setSelectedFeatures([]);
+      }
+      setSelectionMode(!selectionMode);
+    }}> 
+      {selectionMode? "Exit Selection" : "Select to Delete"}
+      </button>
+      
+      {selectionMode && (<button onClick={() => {
+      selectedFeatures.forEach((feature) => {
+        vectorPoly.removeFeature(feature);
+      });
+
+      setSelectedFeatures([]);
+    }}
+  >
+    Delete Selected ({selectedFeatures.length})
+  </button>
+)}
       <div ref={mapElementRef} className="map"></div>
   
       <div
