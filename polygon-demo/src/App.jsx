@@ -163,10 +163,10 @@ function App() {
 
         const deleteButton= popupRef.current.querySelector("#deletePolygon");
 
-        deleteButton.addEventListener("click",() => {
+        deleteButton.onclick = () => {
           vectorPoly.removeFeature(feature);
           popupOverlay.setPosition(undefined);
-        });
+        };
 
         const center =geometry.getInteriorPoint().getCoordinates();
         popupOverlay.setPosition(center);
